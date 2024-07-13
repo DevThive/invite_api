@@ -59,19 +59,7 @@ export class AuthController {
         }
         let newAccessToken: string;
         let newRefreshToken: string;
-        const expiresIn = 3600; // 1시간 * 60분 * 60초
-        if (googleRefreshToken) {
-          const newGoogleTokens =
-            await this.authService.refresh(googleRefreshToken);
-          const user = await this.usersService.findUserById(userId);
-          user.googleAccessToken = newGoogleTokens.accessToken;
-          user.googleAccessTokenExpires = new Date(
-            Date.now() + expiresIn * 1000,
-          );
-          await this.usersService.update(user.id, user);
-          newAccessToken = newGoogleTokens.accessToken;
-          res.setHeader('x-google-access-token', newGoogleTokens.accessToken);
-        }
+
         if (refreshToken) {
           const newTokens = await this.authService.refresh(refreshToken);
           newAccessToken = newTokens.accessToken;
@@ -100,8 +88,10 @@ export class AuthController {
   }
 
   @Get('kakao/redirect')
-  @UseGuards(AuthGuard('kakao'))
-  async kakaoLoginRedirect(@Req() req) {
-    return this.authService.login(req.user);
+  async kakaoLoginRedirect(@Query('code') code: string) {
+    const accessToken = await this.authService.getKakaoAccessToken(code);
+    const userInfo = await this.authService.getUserInfo(accessToken);
+    // console.log(accessToken);
+    return this.authService.kakaologin(userInfo);
   }
 }

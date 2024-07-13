@@ -4,6 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
@@ -22,6 +23,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly httpService: HttpService,
   ) {}
 
   async signup(singupUserDto: SignupUserDto) {
@@ -157,5 +159,40 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async getKakaoAccessToken(code: string): Promise<string> {
+    const tokenUrl = 'https://kauth.kakao.com/oauth/token';
+    const clientId = this.configService.get<string>('KAKAO_CLIENT_ID');
+    const redirectUri = this.configService.get<string>('KAKAO_CALLBACK_URL');
+    const clientSecret = this.configService.get<string>('KAKAO_CLIENT_SECRET');
+
+    const response = await this.httpService
+      .post(tokenUrl, null, {
+        params: {
+          grant_type: 'authorization_code',
+          client_id: clientId,
+          redirect_uri: redirectUri,
+          code,
+          client_secret: clientSecret,
+        },
+      })
+      .toPromise();
+
+    return response.data.access_token;
+  }
+
+  async getUserInfo(accessToken: string): Promise<any> {
+    const userInfoUrl = 'https://kapi.kakao.com/v2/user/me';
+    const response = await this.httpService
+      .get(userInfoUrl, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .toPromise();
+
+    console.log(response.data);
+    return response.data;
   }
 }

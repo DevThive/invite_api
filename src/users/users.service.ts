@@ -75,27 +75,6 @@ export class UsersService {
   //   });
   // }
 
-  //구글 로그인
-  // Google 사용자 정보로 유저 생성 또는 업데이트
-  async createOrUpdateGoogleUser(loginGoogle: loginGoogleDto) {
-    const { email } = loginGoogle;
-    let user = await this.userRepository.findOne({
-      where: { email },
-    });
-    if (user) {
-      // 이미 존재하는 이메일이면 Google ID와 사용자 정보 업데이트
-      await this.userRepository.update(user.id, {
-        ...loginGoogle,
-      });
-    } else {
-      // 새 사용자 생성
-      user = await this.userRepository.save({
-        ...loginGoogle,
-      });
-    }
-    return user;
-  }
-
   //유저 회원가입
   async create(createUserDto: CreateUserDto) {
     const { email } = createUserDto;
@@ -147,9 +126,8 @@ export class UsersService {
         'createdAt',
         'updatedAt',
         'role',
-        'googleRefreshToken',
+
         'currentRefreshToken',
-        'googleAccessTokenExpires',
       ],
     });
   }

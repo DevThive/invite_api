@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 
 import { AuthController } from './auth.controller';
 import { KakaoStrategy } from './strategy/kakao.strategy';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { KakaoStrategy } from './strategy/kakao.strategy';
     }),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     PassportModule, // PassportModule을 다시 추가하여 Google Strategy를 포함할 수 있게 함
+    HttpModule,
   ],
   exports: [
     accessTokenGuard,

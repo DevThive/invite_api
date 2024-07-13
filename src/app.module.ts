@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
+import { HttpModule } from '@nestjs/axios';
 import { ConfigProjectModule } from './config/config.module';
 import { TemplatesService } from './templates/templates.service';
 import { TemplatesModule } from './templates/templates.module';
@@ -16,6 +16,7 @@ import { TypeormModule } from './typeorm/typeorm.module';
     TemplatesModule,
     UsersModule,
     AuthModule,
+    HttpModule,
     // 기타 모듈들
   ],
 

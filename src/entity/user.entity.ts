@@ -25,15 +25,6 @@ export class User {
   @Column({ nullable: true })
   currentRefreshToken?: string;
 
-  @Column({ nullable: true })
-  googleRefreshToken?: string;
-
-  @Column({ nullable: true })
-  googleAccessToken: string;
-
-  @Column({ nullable: true, type: 'timestamp' })
-  googleAccessTokenExpires: Date;
-
   @Column()
   photo: string;
 
@@ -42,9 +33,6 @@ export class User {
 
   @Column({ nullable: true })
   phone?: string;
-
-  @Column({ nullable: true })
-  googleId: string;
 
   @Column({ type: 'enum', enum: Role, default: Role.User })
   role: Role;
