@@ -13,9 +13,9 @@ import {
 // import { noticeRole } from 'src/notice/types/Notice.type';
 
 @Entity({
-  name: 'contacts', // 데이터베이스 테이블의 이름
+  name: 'templates', // 데이터베이스 테이블의 이름
 })
-export class Contact {
+export class Template {
   //아이디
   @PrimaryGeneratedColumn()
   id: number;

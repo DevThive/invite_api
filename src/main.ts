@@ -35,7 +35,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, swaggerCustomOptions);
-
   // ConfigService를 이용해 포트 설정
   const configService = app.get(ConfigService);
   const port: number = configService.get<number>('SERVER_PORT');
