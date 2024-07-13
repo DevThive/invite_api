@@ -25,7 +25,7 @@ export class User {
   @Column({ nullable: true })
   currentRefreshToken?: string;
 
-  @Column()
+  @Column({ nullable: true })
   photo: string;
 
   @Column()

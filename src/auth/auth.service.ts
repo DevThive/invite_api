@@ -153,9 +153,13 @@ export class AuthService {
     // 사용자 유효성 검사 로직 추가
     return payload;
   }
-
   async kakaologin(user: any) {
-    const payload = { username: user.username, sub: user.id };
+    // 데이터베이스에서 사용자 조회 또는 생성
+    const existingUser = await this.userService.findOrCreate(user);
+
+    // JWT 페이로드 생성
+    const payload = { username: existingUser.email, sub: existingUser.id };
+
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -189,10 +193,13 @@ export class AuthService {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+        params: {
+          property_keys: ['kakao_account.email', 'kakao_account.profile'],
+        },
       })
       .toPromise();
 
-    console.log(response.data);
+    // console.log(response);
     return response.data;
   }
 }

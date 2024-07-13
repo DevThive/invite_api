@@ -23,6 +23,25 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     private readonly configService: ConfigService,
   ) {}
+
+  async findOrCreate(user: any): Promise<User> {
+    const { email, nickname } = user.kakao_account;
+
+    // 이메일로 사용자 검색
+    let existingUser = await this.findUserByEmail(email);
+
+    // 사용자가 존재하지 않으면 새로 생성
+    if (!existingUser) {
+      const newUser = this.userRepository.create({
+        email,
+        nickname: user.properties.nickname,
+        // 기타 필요한 필드들 초기화
+      });
+      existingUser = await this.userRepository.save(newUser);
+    }
+
+    return existingUser;
+  }
   // private async refreshGoogleAccessToken(refreshToken: string) {
   //   const clientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
   //   const clientSecret = this.configService.get<string>('GOOGLE_CLIENT_SECRET');

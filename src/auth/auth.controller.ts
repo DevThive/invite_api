@@ -91,7 +91,7 @@ export class AuthController {
   async kakaoLoginRedirect(@Query('code') code: string) {
     const accessToken = await this.authService.getKakaoAccessToken(code);
     const userInfo = await this.authService.getUserInfo(accessToken);
-    // console.log(accessToken);
+    // console.log(userInfo);
     return this.authService.kakaologin(userInfo);
   }
 }
