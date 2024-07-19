@@ -11,6 +11,13 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // CORS 설정
+  app.enableCors({
+    origin: '*', // 허용할 도메인 (모든 도메인을 허용하려면 '*')
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // 쿠키 허용
+  });
+
   // Swagger 설정
   const swaggerCustomOptions: SwaggerCustomOptions = {
     swaggerOptions: {
@@ -35,6 +42,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, swaggerCustomOptions);
+
   // ConfigService를 이용해 포트 설정
   const configService = app.get(ConfigService);
   const port: number = configService.get<number>('SERVER_PORT');

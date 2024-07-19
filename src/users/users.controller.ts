@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { accessTokenGuard } from 'src/auth/guard/access-token.guard';
@@ -27,5 +35,11 @@ export class UsersController {
     @Body() approveUserDto: ApproveUserDto,
   ) {
     return await this.userService.approveUser(id, userId, approveUserDto);
+  }
+
+  @Get('checkid')
+  async checkUsername(@Query('username') username: string) {
+    const isAvailable = await this.userService.isUsernameAvailable(username);
+    return { available: isAvailable };
   }
 }

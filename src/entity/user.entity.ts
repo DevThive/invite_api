@@ -17,6 +17,9 @@ export class User {
   id: number;
 
   @Column({ unique: true })
+  username: string;
+
+  @Column({ unique: true })
   email: string;
 
   @Column({ nullable: true })
@@ -31,8 +34,8 @@ export class User {
   @Column()
   nickname: string;
 
-  @Column({ nullable: true })
-  phone?: string;
+  // @Column({ nullable: true })
+  // phone?: string;
 
   @Column({ type: 'enum', enum: Role, default: Role.User })
   role: Role;

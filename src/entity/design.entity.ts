@@ -11,18 +11,18 @@ import {
 // import { noticeRole } from 'src/notice/types/Notice.type';
 
 @Entity({
-  name: 'templates', // 데이터베이스 테이블의 이름
+  name: 'designs', // 데이터베이스 테이블의 이름
 })
-export class Template {
+export class Design {
   //아이디
   @PrimaryGeneratedColumn()
   id: number;
 
-  // 제목
+  // 디자인 제목
   @Column()
   name: string;
 
-  // 템플릿 설명
+  // 디자인 설명
   @Column()
   content: string;
 

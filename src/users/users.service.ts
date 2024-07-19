@@ -208,6 +208,11 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
+  async isUsernameAvailable(username: string) {
+    const user = await this.userRepository.findOne({ where: { username } });
+    return !user;
+  }
+
   // async updateUserTokens(
   //   userId: number,
   //   tokenData: {
