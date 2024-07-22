@@ -49,11 +49,11 @@ export class AuthService {
   }
 
   async login(loginUserDto: LoginUserDto) {
-    const { email, password } = loginUserDto;
+    const { username, password } = loginUserDto;
 
-    const user = await this.userService.findUserByEmail(email);
+    const user = await this.userService.LoginFindUserById(username);
     if (!user) {
-      throw new NotFoundException('회원가입되지 않은 이메일입니다.');
+      throw new NotFoundException('회원가입되지 않은 아이디입니다.');
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);

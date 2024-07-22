@@ -115,6 +115,12 @@ export class UsersService {
     });
   }
 
+  async LoginFindUserById(username: string) {
+    return await this.userRepository.findOne({
+      where: { username },
+    });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     const isUser = await this.findUserById(id);
 
