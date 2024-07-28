@@ -5,12 +5,12 @@ services:
       context: ./mysql
       dockerfile: Dockerfile
     environment:
-      DATABASE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      DATABASE_NAME: ${MYSQL_DATABASE}
-      DATABASE_USERNAME: ${MYSQL_USER}
-      DATABASE_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - mysql-data:/var/lib/mysql
 
@@ -19,7 +19,7 @@ services:
       context: ./node-app
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - mysql
     environment:
@@ -27,6 +27,6 @@ services:
       DATABASE_USER: ${MYSQL_USER}
       DATABASE_PASSWORD: ${MYSQL_PASSWORD}
       DATABASE_NAME: ${MYSQL_DATABASE}
-      
+
 volumes:
   mysql-data:
